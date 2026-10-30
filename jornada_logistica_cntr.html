@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxograma Logístico - Transporte de CNTR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+
+        .box-highlight {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: #ffffff;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+            border: 2px solid #60a5fa;
+        }
+
+        .box-normal {
+            background-color: #ffffff;
+            color: #1e293b;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .flow-box {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 10;
+            cursor: pointer;
+            border-radius: 0.75rem;
+        }
+
+        .flow-box:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.1);
+            border-color: #93c5fd;
+        }
+        
+        .box-highlight:hover {
+            box-shadow: 0 15px 25px -5px rgba(37, 99, 235, 0.4);
+            border-color: #bfdbfe;
+        }
+
+        .bullet-text {
+            line-height: 1.6;
+            color: #64748b; /* slate-500 */
+        }
+        
+        .badge-active {
+            background-color: #3b82f6 !important; /* blue-500 */
+            color: #ffffff !important;
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
+            animation: pulse-badge 1.5s infinite;
+        }
+
+        @keyframes pulse-badge {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Ensure smooth rendering of SVG */
+        svg {
+            pointer-events: none;
+        }
+        
+        /* Custom scrollbar for container */
+        #scrollContainer::-webkit-scrollbar {
+            height: 8px;
+        }
+        #scrollContainer::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+            border-radius: 4px;
+        }
+        #scrollContainer::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        #scrollContainer::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden text-slate-800">
+
+    <header class="bg-white shadow-sm py-5 px-8 z-20 shrink-0 border-b border-slate-200">
+        <h1 class="text-2xl font-bold text-slate-800 tracking-tight">
+            Jornada Operacional CNTR
+        </h1>
+        <p class="text-sm text-slate-500 mt-1 font-medium">Fluxograma de Negócio (Visão Transportadora)</p>
+    </header>
+
+    <!-- Scrolling Container -->
+    <main class="flex-grow relative overflow-auto bg-slate-50/50 p-8" id="scrollContainer">
+        
+        <!-- SVG Layer for Arrows -->
+        <svg id="arrowLayer" class="absolute top-0 left-0 w-full h-full z-0">
+            <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8" />
+                </marker>
+                <marker id="arrowhead-curved" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#cbd5e1" />
+                </marker>
+            </defs>
+            <!-- Paths will be drawn by JS -->
+        </svg>
+
+        <!-- Flex Container for the Boxes -->
+        <div class="flex flex-row gap-14 items-start mt-40 min-w-max pb-20 px-8 relative z-10" id="boxesContainer">
+            
+            <!-- Step 1 -->
+            <div class="flex flex-col w-64 shrink-0 group">
+                <div id="box-1" class="flow-box bg-blue-50 border-2 border-blue-200 text-blue-900 h-28 flex items-center justify-center font-bold text-center p-4 text-lg transition-all duration-300">
+                    Demanda CNTR
+                </div>
+                <div class="mt-5 text-sm bullet-text px-2 font-medium">
+                    <ul class="space-y-2">
+                        <li>- Pessoas envolvidas</li>
+                        <li>- Dados CNTR (Nº, Tipo, tamanho) </li>
+                        <li>- Etapas (coleta, estufagem, desova e baixa)</li>
+                        <li>- Datas previstas por etapa</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="flex flex-col w-64 shrink-0 group">
+                <div id="box-2" class="flow-box bg-indigo-50 border-2 border-indigo-200 text-indigo-900 h-28 flex items-center justify-center font-bold text-center p-4 text-lg transition-all duration-300">
+                    Ordem de coleta
+                </div>
+                <div class="mt-5 text-sm bullet-text px-2 font-medium">
+                    <ul class="space-y-2">
+                        <li>- Coleta normal</li>
+                        <li>- Estufagem CNTR</li>
+                        <li>- Desova CNTR</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="flex flex-col w-64 shrink-0 group">
+                <div id="box-3" class="flow-box bg-cyan-50 border-2 border-cyan-200 text-cyan-900 h-28 flex items-center justify-center font-bold text-center p-4 text-lg transition-all duration-300">
+                    Embarque (Coleta)
+                </div>
+                <div class="mt-5 text-sm bullet-text px-2 font-medium">
+                    <ul class="space-y-2">
+                        <li>- Coleta normal: requisição transporte c/ 01 ponto passagem</li>
+                        <li>- Desova CNTR: requisição transporte c/ 01 ponto passagem (= normal)</li>                        
+                        <li>- Estufagem CNTR: requisição transporte c/ 02 pontos passagem (local de coleta vazio e de estufagem)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="flex flex-col w-64 shrink-0 group">
+                <div id="box-4" class="flow-box bg-purple-50 border-2 border-purple-200 text-purple-900 h-28 flex items-center justify-center font-bold text-center p-4 text-lg transition-all duration-300">
+                    Docs Carga e Transporte
+                </div>
+                <div class="mt-5 text-sm bullet-text px-2 font-medium">
+                    <ul class="space-y-2">
+                        <li>- Doc carga: NF-e ou DTA (não fiscal)</li>
+                        <li>- Emissão do CT-e p/ doc fiscal e não fiscal</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="flex flex-col w-64 shrink-0 group">
+                <div id="box-5" class="flow-box bg-orange-50 border-2 border-orange-200 text-orange-900 h-28 flex items-center justify-center font-bold text-center p-4 text-lg transition-all duration-300">
+                    Embarque (Entrega carga)
+                </div>
+                <div class="mt-5 text-sm bullet-text px-2 font-medium">
+                    <ul class="space-y-2">
+                        <li>- Reaproveitar embarque de coleta</li>
+                        <li>- Novo embarque</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="flex flex-col w-64 shrink-0 group">
+                <div id="box-6" class="flow-box bg-rose-50 border-2 border-rose-200 text-rose-900 h-28 flex items-center justify-center font-bold text-center p-4 text-lg transition-all duration-300">
+                    Devolução do CNTR vazio
+                </div>
+                <div class="mt-5 text-sm bullet-text px-2 font-medium">
+                    <ul class="space-y-2">
+                        <li>- Ordem de coleta reversa (devolução do CNTR vazio)</li>
+                        <li>- Gerar requisição de transporte no PLDT</li>
+                        <li>- Continuar embarque: requisição c/ 01 pontos de passagem (Local devolução CNTR) </li>
+                        <li>- Novo embarque: requisição c/ 02 pontos de passagem (Local de entrega carga + local devolução CNTR) </li>                        
+                        <li>* Entregar CNTR em local provisório antes da devolução: usar trechos ou gerar nova coleta reversa </li>                                                
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Flowchart Drawing Logic
+        function drawArrows() {
+            const container = document.getElementById('scrollContainer');
+            const svg = document.getElementById('arrowLayer');
+            
+            svg.style.width = Math.max(container.scrollWidth, container.clientWidth) + 'px';
+            svg.style.height = Math.max(container.scrollHeight, container.clientHeight) + 'px';
+            
+            const paths = svg.querySelectorAll('path');
+            paths.forEach(p => p.remove());
+            const texts = svg.querySelectorAll('text');
+            texts.forEach(t => t.remove());
+
+            const getRect = (elementId) => {
+                const el = document.getElementById(elementId);
+                const rect = el.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+                return {
+                    top: rect.top - containerRect.top + container.scrollTop,
+                    bottom: rect.bottom - containerRect.top + container.scrollTop,
+                    left: rect.left - containerRect.left + container.scrollLeft,
+                    right: rect.right - containerRect.left + container.scrollLeft,
+                    width: rect.width,
+                    height: rect.height,
+                    cx: (rect.left - containerRect.left + container.scrollLeft) + (rect.width / 2),
+                    cy: (rect.top - containerRect.top + container.scrollTop) + (rect.height / 2)
+                };
+            };
+
+            const boxes = [];
+            for(let i=1; i<=6; i++) {
+                boxes.push(getRect(`box-${i}`));
+            }
+
+            // Straight sequential arrows
+            for(let i=0; i<5; i++) {
+                const b1 = boxes[i];
+                const b2 = boxes[i+1];
+                
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                const d = `M ${b1.right + 4} ${b1.cy} L ${b2.left - 12} ${b2.cy}`;
+                path.setAttribute('d', d);
+                path.setAttribute('stroke', '#cbd5e1'); 
+                path.setAttribute('stroke-width', '3');
+                path.setAttribute('fill', 'none');
+                path.setAttribute('marker-end', 'url(#arrowhead)');
+                svg.appendChild(path);
+            }
+
+            // Curved Arrow function
+            const drawCurvedArrow = (startBox, endBox, heightOffset, labelText = '') => {
+                const startX = startBox.cx;
+                const startY = startBox.top - 5;
+                const endX = endBox.cx;
+                const endY = endBox.top - 5;
+                
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                
+                const controlY = startY - heightOffset;
+                const d = `M ${startX} ${startY} C ${startX} ${controlY}, ${endX} ${controlY}, ${endX} ${endY - 6}`;
+                
+                path.setAttribute('d', d);
+                path.setAttribute('stroke', '#94a3b8'); 
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('stroke-dasharray', '6 4');
+                path.setAttribute('fill', 'none');
+                path.setAttribute('marker-end', 'url(#arrowhead-curved)');
+                svg.appendChild(path);
+
+                if (labelText) {
+                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    const labelX = (startX + endX) / 2;
+                    const labelY = controlY - 2;
+                    text.setAttribute('x', labelX);
+                    text.setAttribute('y', labelY);
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('font-size', '11');
+                    text.setAttribute('font-weight', '600');
+                    text.setAttribute('fill', '#64748b');
+                    text.textContent = labelText;
+                    svg.appendChild(text);
+                }
+            };
+
+            // Curva 1: Etapa 1 -> Etapa 3 (Removida)
+            // drawCurvedArrow(boxes[0], boxes[2], 90);
+            
+            // Curva 2: Etapa 1 -> Etapa 4
+            drawCurvedArrow(boxes[0], boxes[3], 150, 'CNTR em posse transportador');
+        }
+
+        // Init
+        window.addEventListener('load', drawArrows);
+        window.addEventListener('resize', drawArrows);
+        document.fonts.ready.then(drawArrows);
+    </script>
+</body>
+</html>
